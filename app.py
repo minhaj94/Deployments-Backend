@@ -1,8 +1,14 @@
+import logging
 from flask import Flask, request, jsonify
 from repository import DeploymentRepository
 from models import DeploymentStatus
 from werkzeug.exceptions import HTTPException
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+)
 
 app = Flask(__name__)
 # Initialize the repository which loads seed_data.json
