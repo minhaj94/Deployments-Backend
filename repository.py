@@ -1,7 +1,10 @@
 import json
+import logging
 import os
 from typing import List, Optional
 from models import Deployment
+
+logger = logging.getLogger(__name__)
 
 class DeploymentRepository:
     def __init__(self, filepath: str = "seed_data.json"):
@@ -26,6 +29,7 @@ class DeploymentRepository:
         with open(self.filepath, "r") as f:
             data = json.load(f)
             self._deployments = [Deployment.from_dict(item) for item in data]
+        logger.info(f"Successfully loaded {len(self._deployments)} deployments from {self.filepath}")
 
     def get_all(self, service: Optional[str] = None, status: Optional[str] = None) -> List[Deployment]:
         """Get all deployments, with optional filtering by service and/or status."""

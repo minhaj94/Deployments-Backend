@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from repository import DeploymentRepository
 from models import DeploymentStatus
+from werkzeug.exceptions import HTTPException
+
 
 app = Flask(__name__)
 # Initialize the repository which loads seed_data.json
@@ -34,6 +36,15 @@ def get_deployment(deployment_id):
         }), 404
 
     return jsonify(deployment.to_dict()), 200
+
+@app.errorhandler(HTTPException)
+def handle_http_exception(e):
+    return jsonify({"error": e.description}), e.code
+
+@app.errorhandler(Exception)
+def handle_unexpected_exception(e):
+    app.logger.error(f"Unexpected error: {e}", exc_info=True)
+    return jsonify({"error": "An unexpected error occurred"}), 500
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
