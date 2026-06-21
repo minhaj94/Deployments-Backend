@@ -36,4 +36,4 @@ def get_deployment(deployment_id):
     return jsonify(deployment.to_dict()), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    app.run(host="127.0.0.1", port=5000)
